@@ -3,7 +3,7 @@ import AuthService from "../services/auth.service.js";
 export const signup = async (req, res) => {
   try {
     const user = await AuthService.signup(req.body);
-    res.status(201).json(user);
+    res.status(201).json({ message: "User created", user });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

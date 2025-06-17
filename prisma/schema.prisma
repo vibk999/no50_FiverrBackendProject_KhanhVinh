@@ -37,11 +37,11 @@ model ChiTietLoaiCongViec {
 model NguoiDung {
   id            Int            @id @default(autoincrement())
   name          String?        @db.VarChar(255)
-  email         String?        @db.VarChar(255)
-  pass_word     String?        @db.VarChar(255)
+  email         String         @unique
+  pass_word     String?
   phone         String?        @db.VarChar(20)
   birth_day     String?        @db.VarChar(50)
-  gender        String?        @db.VarChar(10)
+  gender        String
   role          String?        @db.VarChar(50)
   skill         String?        @db.VarChar(255)
   certification String?        @db.VarChar(255)

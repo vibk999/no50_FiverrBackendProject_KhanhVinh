@@ -11,7 +11,10 @@ const authSwagger = {
               properties: {
                 name: { type: "string", example: "Nguyen Van A" },
                 email: { type: "string", example: "a@gmail.com" },
-                password: { type: "string", example: "123456" },
+                pass_word: { type: "string", example: "123456" },
+                phone: { type: "string", example: "0123456789" },
+                gender: { type: "string", example: "male" },
+                role: { type: "string", example: "USER" },
               },
             },
           },
