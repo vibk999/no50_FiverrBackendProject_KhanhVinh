@@ -1,23 +1,27 @@
-const chiTietLoaiCongViecSwagger = {
-  "/chi-tiet-loai-cong-viec": {
+const chiTietCongViecSwagger = {
+  "/api/chi-tiet-loai-cong-viec": {
     get: {
       tags: ["ChiTietLoaiCongViec"],
-      summary: "Lấy danh sách chi tiết loại công việc",
+      summary: "Lấy danh sách chi tiết công việc",
       responses: {
         200: { description: "Lấy danh sách thành công" },
       },
     },
     post: {
       tags: ["ChiTietLoaiCongViec"],
-      summary: "Tạo chi tiết loại công việc mới",
+      summary: "Tạo chi tiết công việc mới",
       requestBody: {
         content: {
           "application/json": {
             schema: {
               type: "object",
               properties: {
-                ten_chi_tiet: { type: "string", example: "Thiết kế UI" },
-                ma_nhom: { type: "integer", example: 1 },
+                ten_chi_tiet: {
+                  type: "string",
+                  example: "Thiết kế Landing Page",
+                },
+                id: { type: "integer", example: 5 },
+                ma_loai_cong_viec: { type: "integer", example: 2 },
               },
             },
           },
@@ -29,19 +33,23 @@ const chiTietLoaiCongViecSwagger = {
     },
   },
 
-  "/chi-tiet-loai-cong-viec/phan-trang-tim-kiem": {
+  "/api/chi-tiet-loai-cong-viec/phan-trang-tim-kiem": {
     get: {
       tags: ["ChiTietLoaiCongViec"],
-      summary: "Tìm kiếm và phân trang",
+      summary: "Tìm kiếm và phân trang chi tiết công việc",
       parameters: [
-        { name: "page", in: "query", schema: { type: "integer", example: 1 } },
         {
-          name: "limit",
+          name: "pageIndex",
+          in: "query",
+          schema: { type: "integer", example: 1 },
+        },
+        {
+          name: "pageSize",
           in: "query",
           schema: { type: "integer", example: 10 },
         },
         {
-          name: "search",
+          name: "keyword",
           in: "query",
           schema: { type: "string", example: "thiết kế" },
         },
@@ -52,10 +60,10 @@ const chiTietLoaiCongViecSwagger = {
     },
   },
 
-  "/chi-tiet-loai-cong-viec/{id}": {
+  "/api/chi-tiet-loai-cong-viec/{id}": {
     get: {
       tags: ["ChiTietLoaiCongViec"],
-      summary: "Lấy chi tiết loại công việc theo ID",
+      summary: "Lấy chi tiết công việc theo ID",
       parameters: [
         { name: "id", in: "path", required: true, schema: { type: "integer" } },
       ],
@@ -65,7 +73,7 @@ const chiTietLoaiCongViecSwagger = {
     },
     put: {
       tags: ["ChiTietLoaiCongViec"],
-      summary: "Cập nhật loại công việc",
+      summary: "Cập nhật chi tiết công việc",
       parameters: [
         { name: "id", in: "path", required: true, schema: { type: "integer" } },
       ],
@@ -75,7 +83,15 @@ const chiTietLoaiCongViecSwagger = {
             schema: {
               type: "object",
               properties: {
-                ten_chi_tiet: { type: "string", example: "Chỉnh sửa UI" },
+                ten_cong_viec: {
+                  type: "string",
+                  example: "Chỉnh sửa Landing Page",
+                },
+                mo_ta: {
+                  type: "string",
+                  example: "Cập nhật nội dung và ảnh nền",
+                },
+                gia_tien: { type: "number", example: 2000000 },
               },
             },
           },
@@ -87,27 +103,31 @@ const chiTietLoaiCongViecSwagger = {
     },
     delete: {
       tags: ["ChiTietLoaiCongViec"],
-      summary: "Xóa loại công việc",
+      summary: "Xoá chi tiết công việc",
       parameters: [
         { name: "id", in: "path", required: true, schema: { type: "integer" } },
       ],
       responses: {
-        200: { description: "Xóa thành công" },
+        200: { description: "Xoá thành công" },
       },
     },
   },
-
-  "/chi-tiet-loai-cong-viec/them-nhom-chi-tiet-loai": {
+  "/api/chi-tiet-loai-cong-viec/them-nhom-chi-tiet-loai": {
     post: {
       tags: ["ChiTietLoaiCongViec"],
-      summary: "Thêm nhóm chi tiết loại",
+      summary: "Tạo nhóm chi tiết loại công việc mới",
+      security: [{ bearerAuth: [] }],
       requestBody: {
+        required: true,
         content: {
           "application/json": {
             schema: {
               type: "object",
               properties: {
-                ten_nhom: { type: "string", example: "Frontend" },
+                ten_nhom: {
+                  type: "string",
+                  example: "Thiết kế Web",
+                },
               },
             },
           },
@@ -115,15 +135,17 @@ const chiTietLoaiCongViecSwagger = {
       },
       responses: {
         201: { description: "Tạo nhóm thành công" },
+        400: { description: "Dữ liệu không hợp lệ" },
       },
     },
   },
 
-  "/chi-tiet-loai-cong-viec/upload-hinh-nhom-loai-cong-viec/{MaNhomLoaiCongViec}":
+  "/api/chi-tiet-loai-cong-viec/upload-hinh-nhom-loai-cong-viec/{MaNhomLoaiCongViec}":
     {
       post: {
         tags: ["ChiTietLoaiCongViec"],
         summary: "Upload hình nhóm loại công việc",
+        security: [{ bearerAuth: [] }],
         parameters: [
           {
             name: "MaNhomLoaiCongViec",
@@ -133,40 +155,54 @@ const chiTietLoaiCongViecSwagger = {
           },
         ],
         requestBody: {
+          required: true,
           content: {
-            "application/json": {
+            "multipart/form-data": {
               schema: {
                 type: "object",
                 properties: {
-                  imageUrl: {
+                  formFile: {
                     type: "string",
-                    example: "https://example.com/image.png",
+                    format: "binary",
                   },
                 },
+                required: ["formFile"],
               },
             },
           },
         },
         responses: {
           200: { description: "Upload thành công" },
+          400: { description: "Thiếu file hình ảnh" },
+          500: { description: "Lỗi server" },
         },
       },
     },
 
-  "/chi-tiet-loai-cong-viec/sua-nhom-chi-tiet-loai/{id}": {
+  "/api/chi-tiet-loai-cong-viec/sua-nhom-chi-tiet-loai/{id}": {
     put: {
       tags: ["ChiTietLoaiCongViec"],
-      summary: "Cập nhật nhóm chi tiết loại",
+      summary: "Cập nhật nhóm chi tiết loại công việc",
+      security: [{ bearerAuth: [] }],
       parameters: [
-        { name: "id", in: "path", required: true, schema: { type: "integer" } },
+        {
+          name: "id",
+          in: "path",
+          required: true,
+          schema: { type: "integer" },
+        },
       ],
       requestBody: {
+        required: true,
         content: {
           "application/json": {
             schema: {
               type: "object",
               properties: {
-                ten_nhom: { type: "string", example: "Backend" },
+                ten_nhom: {
+                  type: "string",
+                  example: "Thiết kế ứng dụng di động",
+                },
               },
             },
           },
@@ -174,9 +210,10 @@ const chiTietLoaiCongViecSwagger = {
       },
       responses: {
         200: { description: "Cập nhật thành công" },
+        400: { description: "Dữ liệu không hợp lệ" },
       },
     },
   },
 };
 
-export default chiTietLoaiCongViecSwagger;
+export default chiTietCongViecSwagger;

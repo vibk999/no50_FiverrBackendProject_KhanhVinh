@@ -1,5 +1,5 @@
 const thueCongViecSwagger = {
-  "/thue-cong-viec": {
+  "/api/thue-cong-viec": {
     get: {
       tags: ["ThueCongViec"],
       summary: "Lấy tất cả thuê công việc",
@@ -37,7 +37,7 @@ const thueCongViecSwagger = {
     },
   },
 
-  "/thue-cong-viec/phan-trang-tim-kiem": {
+  "/api/thue-cong-viec/phan-trang-tim-kiem": {
     get: {
       tags: ["ThueCongViec"],
       summary: "Phân trang & tìm kiếm thuê công việc",
@@ -67,7 +67,7 @@ const thueCongViecSwagger = {
     },
   },
 
-  "/thue-cong-viec/{id}": {
+  "/api/thue-cong-viec/{id}": {
     get: {
       tags: ["ThueCongViec"],
       summary: "Lấy thuê công việc theo ID",
@@ -137,7 +137,7 @@ const thueCongViecSwagger = {
     },
   },
 
-  "/thue-cong-viec/lay-danh-sach-da-thue": {
+  "/api/thue-cong-viec/lay-danh-sach-da-thue": {
     get: {
       tags: ["ThueCongViec"],
       summary: "Lấy danh sách công việc đã thuê theo người dùng đăng nhập",
@@ -147,7 +147,7 @@ const thueCongViecSwagger = {
     },
   },
 
-  "/thue-cong-viec/hoan-thanh-cong-viec/{MaThueCongViec}": {
+  "/api/thue-cong-viec/hoan-thanh-cong-viec/{MaThueCongViec}": {
     post: {
       tags: ["ThueCongViec"],
       summary: "Hoàn thành công việc thuê",

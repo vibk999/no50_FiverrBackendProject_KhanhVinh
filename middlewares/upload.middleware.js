@@ -1,30 +1,25 @@
 import multer from "multer";
 import path from "path";
 
+// Cấu hình nơi lưu và tên file
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./public/img"); // đường dẫn lưu ảnh
-  },
+  destination: (req, file, cb) => cb(null, "public/uploads/"),
   filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname);
-    cb(null, file.fieldname + "-" + uniqueSuffix + ext);
+    const uniqueName = `${Date.now()}-${file.originalname}`;
+    cb(null, uniqueName);
   },
 });
 
-const fileFilter = (req, file, cb) => {
-  const filetypes = /jpeg|jpg|png|gif/;
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = filetypes.test(file.mimetype);
-  if (mimetype && extname) {
-    return cb(null, true);
-  } else {
-    cb(new Error("Chỉ hỗ trợ định dạng ảnh!"));
-  }
-};
-
-export const upload = multer({
+const upload = multer({
   storage,
-  fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  limits: { fileSize: 5 * 1024 * 1024 }, // Giới hạn 5MB
+  fileFilter: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    if (![".png", ".jpg", ".jpeg", ".gif"].includes(ext.toLowerCase())) {
+      return cb(new Error("Chỉ hỗ trợ file ảnh"));
+    }
+    cb(null, true);
+  },
 });
+
+export default upload;

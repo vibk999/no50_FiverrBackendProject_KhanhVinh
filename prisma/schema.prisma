@@ -37,11 +37,11 @@ model ChiTietLoaiCongViec {
 model NguoiDung {
   id            Int            @id @default(autoincrement())
   name          String?        @db.VarChar(255)
-  email         String         @unique
-  pass_word     String?
+  email         String?        @unique(map: "unique_email") @db.VarChar(255)
+  pass_word     String?        @db.VarChar(255)
   phone         String?        @db.VarChar(20)
   birth_day     String?        @db.VarChar(50)
-  gender        String
+  gender        String?        @db.VarChar(10)
   role          String?        @db.VarChar(50)
   skill         String?        @db.VarChar(255)
   certification String?        @db.VarChar(255)
@@ -50,6 +50,7 @@ model NguoiDung {
   deletedAt     DateTime?      @db.Timestamp(0)
   createdAt     DateTime       @default(now()) @db.Timestamp(0)
   updatedAt     DateTime       @default(now()) @updatedAt @db.Timestamp(0)
+  avatar        String?        @db.VarChar(255)
   binhLuans     BinhLuan[]     @relation("NguoiBinhLuanToBinhLuan")
   congViecs     CongViec[]     @relation("NguoiTaoToCongViec")
   thueCongViecs ThueCongViec[] @relation("NguoiThueToThueCongViec")

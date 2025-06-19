@@ -11,6 +11,21 @@ const swaggerDocs = {
     title: "FIVERR",
     version: "1.0.0",
   },
+  servers: [
+    {
+      url: "",
+      description: "Production Server",
+    },
+  ],
+  components: {
+    securitySchemes: {
+      tokenAuth: {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+      },
+    },
+  },
   paths: {
     ...authSwagger,
     ...binhLuanSwagger,

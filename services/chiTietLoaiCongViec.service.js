@@ -16,27 +16,44 @@ export const update = (id, data) =>
 export const remove = (id) =>
   prisma.chiTietLoaiCongViec.delete({ where: { id: +id } });
 
-export const searchWithPagination = async ({ page, limit, search }) => {
-  const skip = (page - 1) * limit;
-  const where = {
-    ten_chi_tiet: {
-      contains: search,
-      mode: "insensitive",
-    },
+const getChiTietLoaiPhanTrang = async (pageIndex, pageSize, keyword) => {
+  const skip = (pageIndex - 1) * pageSize;
+
+  const whereCondition = {
+    isDeleted: false,
   };
 
-  const [items, total] = await Promise.all([
-    prisma.chiTietLoaiCongViec.findMany({ skip: +skip, take: +limit, where }),
-    prisma.chiTietLoaiCongViec.count({ where }),
-  ]);
+  if (keyword) {
+    whereCondition.ten_chi_tiet = {
+      contains: keyword,
+    };
+  }
+  const data = await prisma.chiTietLoaiCongViec.findMany({
+    where: whereCondition,
+    skip: skip,
+    take: pageSize,
+  });
 
-  return { items, total, page: +page };
+  const total = await prisma.chiTietLoaiCongViec.count({
+    where: whereCondition,
+  });
+
+  return {
+    data,
+    total,
+    pageIndex,
+    pageSize,
+  };
+};
+
+export const chiTietLoaiService = {
+  getChiTietLoaiPhanTrang,
 };
 
 export const createGroup = (data) => prisma.loaiCongViec.create({ data });
 
 export const uploadImage = (id, imageUrl) =>
-  prisma.loaiCongViec.update({
+  prisma.chiTietLoaiCongViec.update({
     where: { id: +id },
     data: { hinh_anh: imageUrl },
   });

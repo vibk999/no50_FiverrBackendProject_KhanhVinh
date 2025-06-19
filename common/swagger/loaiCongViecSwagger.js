@@ -1,5 +1,5 @@
 const loaiCongViecSwagger = {
-  "/loai-cong-viec": {
+  "/api/loai-cong-viec": {
     get: {
       tags: ["LoaiCongViec"],
       summary: "Lấy tất cả loại công việc",
@@ -34,7 +34,7 @@ const loaiCongViecSwagger = {
     },
   },
 
-  "/loai-cong-viec/phan-trang-tim-kiem": {
+  "/api/loai-cong-viec/phan-trang-tim-kiem": {
     get: {
       tags: ["LoaiCongViec"],
       summary: "Phân trang & tìm kiếm loại công việc",
@@ -64,7 +64,7 @@ const loaiCongViecSwagger = {
     },
   },
 
-  "/loai-cong-viec/{id}": {
+  "/api/loai-cong-viec/{id}": {
     get: {
       tags: ["LoaiCongViec"],
       summary: "Lấy thông tin loại công việc theo ID",

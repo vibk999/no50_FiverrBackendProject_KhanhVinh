@@ -1,5 +1,5 @@
 const nguoiDungSwagger = {
-  "/users": {
+  "/api/users": {
     get: {
       tags: ["NguoiDung"],
       summary: "Lấy danh sách tất cả người dùng",
@@ -61,7 +61,7 @@ const nguoiDungSwagger = {
     },
   },
 
-  "/users/phan-trang-tim-kiem": {
+  "/api/users/phan-trang-tim-kiem": {
     get: {
       tags: ["NguoiDung"],
       summary: "Phân trang và tìm kiếm người dùng",
@@ -88,7 +88,7 @@ const nguoiDungSwagger = {
     },
   },
 
-  "/users/{id}": {
+  "/api/users/{id}": {
     get: {
       tags: ["NguoiDung"],
       summary: "Lấy thông tin người dùng theo ID",
@@ -140,7 +140,7 @@ const nguoiDungSwagger = {
     },
   },
 
-  "/users/search/{TenNguoiDung}": {
+  "/api/users/search/{TenNguoiDung}": {
     get: {
       tags: ["NguoiDung"],
       summary: "Tìm kiếm người dùng theo tên",
@@ -158,7 +158,7 @@ const nguoiDungSwagger = {
     },
   },
 
-  "/users/upload-avatar": {
+  "/api/users/upload-avatar": {
     post: {
       tags: ["NguoiDung"],
       summary: "Tải ảnh đại diện người dùng",

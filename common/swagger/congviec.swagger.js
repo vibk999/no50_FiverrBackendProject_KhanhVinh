@@ -1,69 +1,109 @@
 const congViecSwagger = {
-  "/cong-viec": {
+  "/api/cong-viec/": {
     get: {
       tags: ["CongViec"],
-      summary: "Lấy danh sách công việc",
+      summary: "Lấy danh sách tất cả công việc",
       responses: {
-        200: { description: "Thành công" },
+        200: {
+          description: "Danh sách công việc",
+        },
       },
     },
     post: {
       tags: ["CongViec"],
-      summary: "Thêm công việc mới",
+      summary: "Tạo công việc mới",
+      security: [{ tokenAuth: [] }],
       requestBody: {
+        required: true,
         content: {
           "application/json": {
             schema: {
               type: "object",
               properties: {
-                tenCongViec: { type: "string", example: "Chỉnh sửa video" },
-                danhGia: { type: "integer", example: 5 },
-                giaTien: { type: "number", example: 500000 },
+                ten_cong_viec: { type: "string" },
+                mo_ta: { type: "string" },
+                ma_chi_tiet_loai: { type: "integer" },
               },
+              required: ["ten_cong_viec", "ma_chi_tiet_loai"],
             },
           },
         },
       },
       responses: {
         201: { description: "Tạo công việc thành công" },
+        400: { description: "Lỗi tạo công việc" },
       },
     },
   },
 
-  "/cong-viec/phan-trang-tim-kiem": {
+  "/api/cong-viec/phan-trang-tim-kiem": {
     get: {
       tags: ["CongViec"],
-      summary: "Tìm kiếm công việc theo phân trang",
-      responses: {
-        200: { description: "Danh sách phân trang công việc" },
-      },
-    },
-  },
-
-  "/cong-viec/{id}": {
-    get: {
-      tags: ["CongViec"],
-      summary: "Lấy chi tiết công việc theo ID",
+      summary: "Lấy danh sách công việc theo phân trang và tìm kiếm",
       parameters: [
-        { name: "id", in: "path", required: true, schema: { type: "integer" } },
+        {
+          name: "page",
+          in: "query",
+          required: false,
+          schema: { type: "integer" },
+        },
+        {
+          name: "pageSize",
+          in: "query",
+          required: false,
+          schema: { type: "integer" },
+        },
+        {
+          name: "keyword",
+          in: "query",
+          required: false,
+          schema: { type: "string" },
+        },
       ],
       responses: {
-        200: { description: "Thành công" },
+        200: { description: "Danh sách công việc phân trang" },
+      },
+    },
+  },
+
+  "/api/cong-viec/{id}": {
+    get: {
+      tags: ["CongViec"],
+      summary: "Lấy công việc theo ID",
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          required: true,
+          schema: { type: "integer" },
+        },
+      ],
+      responses: {
+        200: { description: "Chi tiết công việc" },
+        404: { description: "Không tìm thấy công việc" },
       },
     },
     put: {
       tags: ["CongViec"],
-      summary: "Cập nhật công việc",
+      summary: "Cập nhật công việc theo ID",
+      security: [{ tokenAuth: [] }],
       parameters: [
-        { name: "id", in: "path", required: true, schema: { type: "integer" } },
+        {
+          name: "id",
+          in: "path",
+          required: true,
+          schema: { type: "integer" },
+        },
       ],
       requestBody: {
+        required: true,
         content: {
           "application/json": {
             schema: {
               type: "object",
               properties: {
-                tenCongViec: { type: "string", example: "Dịch thuật tài liệu" },
+                ten_cong_viec: { type: "string" },
+                mo_ta: { type: "string" },
               },
             },
           },
@@ -71,24 +111,33 @@ const congViecSwagger = {
       },
       responses: {
         200: { description: "Cập nhật thành công" },
+        400: { description: "Lỗi cập nhật" },
       },
     },
     delete: {
       tags: ["CongViec"],
-      summary: "Xóa công việc",
+      summary: "Xóa công việc theo ID",
+      security: [{ tokenAuth: [] }],
       parameters: [
-        { name: "id", in: "path", required: true, schema: { type: "integer" } },
+        {
+          name: "id",
+          in: "path",
+          required: true,
+          schema: { type: "integer" },
+        },
       ],
       responses: {
         200: { description: "Xóa thành công" },
+        400: { description: "Lỗi xóa công việc" },
       },
     },
   },
 
-  "/cong-viec/upload-hinh-cong-viec/{MaCongViec}": {
+  "/api/cong-viec/upload-hinh-cong-viec/{MaCongViec}": {
     post: {
       tags: ["CongViec"],
-      summary: "Upload hình ảnh cho công việc",
+      summary: "Upload hình cho công việc",
+      security: [{ tokenAuth: [] }],
       parameters: [
         {
           name: "MaCongViec",
@@ -103,7 +152,7 @@ const congViecSwagger = {
             schema: {
               type: "object",
               properties: {
-                hinhAnh: {
+                formFile: {
                   type: "string",
                   format: "binary",
                 },
@@ -113,22 +162,23 @@ const congViecSwagger = {
         },
       },
       responses: {
-        200: { description: "Upload thành công" },
+        200: { description: "Upload hình thành công" },
+        400: { description: "Không có file được upload" },
       },
     },
   },
 
-  "/cong-viec/lay-menu-loai-cong-viec": {
+  "/api/cong-viec/lay-menu-loai-cong-viec": {
     get: {
       tags: ["CongViec"],
       summary: "Lấy menu loại công việc",
       responses: {
-        200: { description: "Thành công" },
+        200: { description: "Danh sách menu loại công việc" },
       },
     },
   },
 
-  "/cong-viec/lay-chi-tiet-loai-cong-viec/{MaLoaiCongViec}": {
+  "/api/cong-viec/lay-chi-tiet-loai-cong-viec/{MaLoaiCongViec}": {
     get: {
       tags: ["CongViec"],
       summary: "Lấy chi tiết loại công việc theo mã loại",
@@ -141,12 +191,12 @@ const congViecSwagger = {
         },
       ],
       responses: {
-        200: { description: "Thành công" },
+        200: { description: "Danh sách chi tiết loại công việc" },
       },
     },
   },
 
-  "/cong-viec/lay-cong-viec-theo-chi-tiet-loai/{MaChiTietLoai}": {
+  "/api/cong-viec/lay-cong-viec-theo-chi-tiet-loai/{MaChiTietLoai}": {
     get: {
       tags: ["CongViec"],
       summary: "Lấy công việc theo mã chi tiết loại",
@@ -159,15 +209,15 @@ const congViecSwagger = {
         },
       ],
       responses: {
-        200: { description: "Thành công" },
+        200: { description: "Danh sách công việc theo chi tiết loại" },
       },
     },
   },
 
-  "/cong-viec/lay-cong-viec-chi-tiet/{MaCongViec}": {
+  "/api/cong-viec/lay-cong-viec-chi-tiet/{MaCongViec}": {
     get: {
       tags: ["CongViec"],
-      summary: "Lấy chi tiết công việc",
+      summary: "Lấy công việc chi tiết",
       parameters: [
         {
           name: "MaCongViec",
@@ -177,15 +227,16 @@ const congViecSwagger = {
         },
       ],
       responses: {
-        200: { description: "Thành công" },
+        200: { description: "Chi tiết công việc" },
+        404: { description: "Không tìm thấy công việc" },
       },
     },
   },
 
-  "/cong-viec/lay-danh-sach-cong-viec-theo-ten/{TenCongViec}": {
+  "/api/cong-viec/lay-danh-sach-cong-viec-theo-ten/{TenCongViec}": {
     get: {
       tags: ["CongViec"],
-      summary: "Lấy danh sách công việc theo tên",
+      summary: "Tìm công việc theo tên",
       parameters: [
         {
           name: "TenCongViec",
@@ -195,10 +246,9 @@ const congViecSwagger = {
         },
       ],
       responses: {
-        200: { description: "Thành công" },
+        200: { description: "Danh sách công việc theo tên" },
       },
     },
   },
 };
-
 export default congViecSwagger;

@@ -27,75 +27,93 @@ export const deleteCongViec = async (id) => {
   });
 };
 
-export const uploadHinhCongViec = async (id, hinhAnh) => {
+export const uploadHinhCongViec = async (id, imageUrl) => {
   return await prisma.congViec.update({
     where: { id: Number(id) },
-    data: { hinhAnh },
+    data: { hinh_anh: imageUrl },
   });
 };
 
-export const getCongViecPaging = async (page, size, keyword = "") => {
-  const skip = (page - 1) * size;
+export const getCongViecPaging = async (page = 1, size = 10, keyword = "") => {
+  // Đảm bảo kiểu dữ liệu là số nguyên dương
+  const currentPage = Math.max(parseInt(page) || 1, 1);
+  const pageSize = Math.max(parseInt(size) || 10, 1);
+  const skip = (currentPage - 1) * pageSize;
+
+  // Nếu keyword trống, không cần thêm điều kiện tìm kiếm
+  const whereCondition = {
+    isDeleted: false,
+    ...(keyword.trim() && {
+      ten_cong_viec: {
+        contains: keyword.trim(),
+      },
+    }),
+  };
+
   const [data, total] = await Promise.all([
     prisma.congViec.findMany({
-      where: {
-        tenCongViec: {
-          contains: keyword,
-          mode: "insensitive",
-        },
-      },
+      where: whereCondition,
       skip,
-      take: size,
+      take: pageSize,
     }),
     prisma.congViec.count({
-      where: {
-        tenCongViec: {
-          contains: keyword,
-          mode: "insensitive",
-        },
-      },
+      where: whereCondition,
     }),
   ]);
 
   return { total, data };
 };
-
 export const layMenuLoaiCongViec = async () => {
   return await prisma.loaiCongViec.findMany({
+    where: {
+      isDeleted: false,
+    },
     include: {
-      nhomChiTietLoai: true,
+      chiTietLoai: {
+        where: {
+          isDeleted: false,
+        },
+      },
     },
   });
 };
-
 export const layChiTietLoaiCongViec = async (maLoaiCongViec) => {
   return await prisma.chiTietLoaiCongViec.findMany({
-    where: { maLoaiCongViec: Number(maLoaiCongViec) },
+    where: { ma_chi_tiet_loai: Number(maLoaiCongViec) },
   });
 };
 
 export const layCongViecTheoChiTietLoai = async (maChiTietLoai) => {
   return await prisma.congViec.findMany({
-    where: { maChiTietLoai: Number(maChiTietLoai) },
+    where: { ma_chi_tiet_loai: Number(maChiTietLoai) },
   });
 };
 
 export const layCongViecChiTiet = async (maCongViec) => {
   return await prisma.congViec.findUnique({
-    where: { id: Number(maCongViec) },
+    where: { id: maCongViec },
     include: {
-      chiTietLoaiCongViec: true,
+      chiTietLoai: {
+        include: {
+          loaiCongViec: true,
+        },
+      },
       nguoiTao: true,
+      binhLuans: {
+        include: {
+          nguoiBinhLuan: true,
+        },
+      },
+      thueCongViecs: true,
     },
   });
 };
-
 export const layDanhSachCongViecTheoTen = async (ten) => {
   return await prisma.congViec.findMany({
     where: {
-      tenCongViec: {
+      ten_cong_viec: {
         contains: ten,
-        mode: "insensitive",
+        // mode: "insensitive",
       },
     },
   });

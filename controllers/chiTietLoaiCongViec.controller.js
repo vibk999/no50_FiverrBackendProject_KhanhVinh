@@ -1,4 +1,5 @@
 import * as ChiTietService from "../services/chiTietLoaiCongViec.service.js";
+import { chiTietLoaiService } from "../services/chiTietLoaiCongViec.service.js";
 
 export const getAll = async (req, res) => {
   const data = await ChiTietService.getAll();
@@ -25,27 +26,75 @@ export const remove = async (req, res) => {
   res.json({ message: "Deleted successfully" });
 };
 
-export const searchWithPagination = async (req, res) => {
-  const { page = 1, limit = 10, search = "" } = req.query;
-  const data = await ChiTietService.searchWithPagination({
-    page,
-    limit,
-    search,
-  });
-  res.json(data);
+const getChiTietLoaiPhanTrangTimKiem = async (req, res) => {
+  try {
+    const pageIndex = parseInt(req.query.pageIndex) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 10;
+    const keyword = req.query.keyword || "";
+
+    if (pageIndex <= 0 || pageSize <= 0) {
+      return res.status(400).send({
+        statusCode: 400,
+        message: "pageIndex và pageSize phải là số nguyên dương.",
+      });
+    }
+
+    // Gọi service để lấy dữ liệu
+    const result = await chiTietLoaiService.getChiTietLoaiPhanTrang(
+      pageIndex,
+      pageSize,
+      keyword
+    );
+
+    res.status(200).send({
+      statusCode: 200,
+      message: "Lấy danh sách chi tiết loại công việc thành công!",
+      content: {
+        pageIndex: result.pageIndex,
+        pageSize: result.pageSize,
+        totalRow: result.total,
+        keyword: keyword,
+        data: result.data,
+      },
+    });
+  } catch (error) {
+    console.error("Error in getChiTietLoaiPhanTrangTimKiem:", error);
+    res.status(500).send({
+      statusCode: 500,
+      message: "Lỗi server",
+    });
+  }
 };
 
+export const chiTietLoaiController = {
+  getChiTietLoaiPhanTrangTimKiem,
+};
 export const createGroup = async (req, res) => {
   const data = await ChiTietService.createGroup(req.body);
   res.status(201).json(data);
 };
 
 export const uploadImage = async (req, res) => {
-  const result = await ChiTietService.uploadImage(
-    req.params.MaNhomLoaiCongViec,
-    req.body.imageUrl
-  );
-  res.json(result);
+  try {
+    const { MaNhomLoaiCongViec } = req.params;
+    const image = req.file;
+
+    if (!image) {
+      return res
+        .status(400)
+        .json({ message: "File hình không được tìm thấy." });
+    }
+
+    const imageUrl = `/uploads/${image.filename}`; // hoặc dùng cloud URL nếu upload cloud
+    const result = await ChiTietService.uploadImage(
+      MaNhomLoaiCongViec,
+      imageUrl
+    );
+
+    res.json({ message: "Upload thành công", result });
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi server", error });
+  }
 };
 
 export const updateGroup = async (req, res) => {

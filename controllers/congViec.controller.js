@@ -65,16 +65,25 @@ export const uploadHinhCongViec = async (req, res) => {
   try {
     const { MaCongViec } = req.params;
     const file = req.file;
-    if (!file)
+
+    if (!file) {
       return res.status(400).json({ message: "Không có file được upload" });
+    }
+
+    // Đường dẫn ảnh lưu vào DB, có thể dùng đường dẫn cloud nếu bạn upload cloud
+    const imageUrl = `/uploads/${file.filename}`;
 
     const updated = await congViecService.uploadHinhCongViec(
       MaCongViec,
-      file.filename
+      imageUrl
     );
-    res.status(200).json({ message: "Upload thành công", data: updated });
+
+    res.status(200).json({
+      message: "Upload hình công việc thành công",
+      data: updated,
+    });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: "Lỗi server", error: err.message });
   }
 };
 
@@ -83,11 +92,11 @@ export const layMenuLoaiCongViec = async (req, res) => {
   try {
     const data = await congViecService.layMenuLoaiCongViec();
     res.status(200).json(data);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch (error) {
+    console.error("Lỗi khi lấy menu loại công việc:", error);
+    res.status(500).json({ message: "Lỗi máy chủ." });
   }
 };
-
 // Lấy chi tiết loại công việc theo mã loại
 export const layChiTietLoaiCongViec = async (req, res) => {
   try {
@@ -113,16 +122,25 @@ export const layCongViecTheoChiTietLoai = async (req, res) => {
 };
 
 // Lấy công việc chi tiết
+
 export const layCongViecChiTiet = async (req, res) => {
   try {
     const { MaCongViec } = req.params;
-    const data = await congViecService.layCongViecChiTiet(MaCongViec);
-    res.status(200).json(data);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+
+    const congViecChiTiet = await congViecService.layCongViecChiTiet(
+      parseInt(MaCongViec)
+    );
+
+    if (!congViecChiTiet) {
+      return res.status(404).json({ message: "Không tìm thấy công việc." });
+    }
+
+    res.status(200).json(congViecChiTiet);
+  } catch (error) {
+    console.error("Lỗi khi lấy chi tiết công việc:", error);
+    res.status(500).json({ message: "Lỗi máy chủ." });
   }
 };
-
 // Tìm công việc theo tên
 export const layDanhSachCongViecTheoTen = async (req, res) => {
   try {

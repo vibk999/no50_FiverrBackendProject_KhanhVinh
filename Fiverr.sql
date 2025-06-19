@@ -57,6 +57,11 @@ CREATE TABLE NguoiDung (
 	`createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`updatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+ALTER TABLE NguoiDung
+ADD CONSTRAINT unique_email UNIQUE (email);
+ALTER TABLE NguoiDung
+ADD COLUMN avatar VARCHAR(255) DEFAULT NULL;
+
 INSERT INTO NguoiDung (name, email, pass_word, phone, birth_day, gender, role, skill, certification) VALUES 
 ('Nguyen Van A', 'a@gmail.com', '123456', '0123456789', '1990-01-01', 'male', 'admin', 'Photoshop', 'Adobe Certified'),
 ('Tran Thi B', 'b@gmail.com', '123456', '0987654321', '1992-05-20', 'female', 'user', 'ReactJS', 'Google Developer'),

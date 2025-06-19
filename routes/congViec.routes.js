@@ -1,6 +1,6 @@
 import express from "express";
 import * as congViecController from "../controllers/congViec.controller.js";
-import { upload } from "../middlewares/upload.middleware.js";
+import upload from "../middlewares/upload.middleware.js";
 import authMiddleware from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
@@ -27,7 +27,7 @@ router.delete("/:id", authMiddleware, congViecController.deleteCongViec);
 router.post(
   "/upload-hinh-cong-viec/:MaCongViec",
   authMiddleware,
-  upload.single("hinhAnh"),
+  upload.single("formFile"),
   congViecController.uploadHinhCongViec
 );
 

@@ -9,7 +9,7 @@ import {
 import authMiddleware from "../middlewares/auth.middleware.js";
 const router = express.Router();
 
-router.get("/", authMiddleware, getAllBinhLuan);
+router.get("/", getAllBinhLuan);
 router.post("/", authMiddleware, createBinhLuan);
 router.put("/:id", authMiddleware, updateBinhLuan);
 router.delete("/:id", authMiddleware, deleteBinhLuan);

@@ -1,5 +1,5 @@
 const authSwagger = {
-  "/auth/signup": {
+  "/api/auth/signup": {
     post: {
       tags: ["Auth"],
       summary: "Đăng ký tài khoản",
@@ -26,7 +26,7 @@ const authSwagger = {
     },
   },
 
-  "/auth/signin": {
+  "/api/auth/signin": {
     post: {
       tags: ["Auth"],
       summary: "Đăng nhập",
@@ -37,7 +37,7 @@ const authSwagger = {
               type: "object",
               properties: {
                 email: { type: "string", example: "a@gmail.com" },
-                password: { type: "string", example: "123456" },
+                pass_word: { type: "string", example: "123456" },
               },
             },
           },
