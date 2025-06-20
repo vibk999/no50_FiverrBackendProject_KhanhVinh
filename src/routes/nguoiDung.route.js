@@ -10,8 +10,8 @@ import {
   uploadAvatar,
 } from "../controllers/nguoiDung.controller.js";
 
-import upload from "../middlewares/upload.middleware.js";
-import authMiddleware from "../middlewares/auth.middleware.js";
+import upload from "../../middlewares/upload.middleware.js";
+import authMiddleware from "../../middlewares/auth.middleware.js";
 
 const router = express.Router();
 

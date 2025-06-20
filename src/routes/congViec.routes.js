@@ -1,8 +1,8 @@
 import express from "express";
 import * as congViecController from "../controllers/congViec.controller.js";
-import upload from "../middlewares/upload.middleware.js";
-import authMiddleware from "../middlewares/auth.middleware.js";
-import { layMenuLoaiCongViec } from "../controllers/congViec.controller";
+import upload from "../../middlewares/upload.middleware.js";
+import authMiddleware from "../../middlewares/auth.middleware.js";
+import { layMenuLoaiCongViec } from "../controllers/congViec.controller.js";
 
 const router = express.Router();
 

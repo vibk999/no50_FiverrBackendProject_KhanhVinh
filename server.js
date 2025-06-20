@@ -2,14 +2,14 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 // import YAML from "yamljs";
-import authRoutes from "../routes/auth.route.js";
-import binhLuanRoutes from "../routes/binhluan.route.js";
-import congViecRoutes from "../routes/congViec.routes.js";
-import layChiTietLoaiCongViec from "../routes/chiTietLoaiCongViec.route.js";
-import loaiCongViec from "../routes/loaiCongViec.route.js";
-import nguoiDung from "../routes/nguoiDung.route.js";
-import thueCongViec from "../routes/thueCongViec.routes.js";
-import swaggerDocs from "../common/swagger/index";
+import authRoutes from "./src/routes/auth.route.js";
+import binhLuanRoutes from "./src/routes/binhluan.route.js";
+import congViecRoutes from "./src/routes/congViec.routes.js";
+import layChiTietLoaiCongViec from "./src/routes/chiTietLoaiCongViec.route.js";
+import loaiCongViec from "./src/routes/loaiCongViec.route.js";
+import nguoiDung from "./src/routes/nguoiDung.route.js";
+import thueCongViec from "./src/routes/thueCongViec.routes.js";
+import swaggerDocs from "./common/swagger/index";
 import swaggerUi from "swagger-ui-express";
 
 dotenv.config();
@@ -41,4 +41,3 @@ const PORT = process.env.PORT || 3069;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
-module.exports = app;

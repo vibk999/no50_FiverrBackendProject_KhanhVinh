@@ -1,7 +1,7 @@
 import express from "express";
 import * as ChiTietController from "../controllers/chiTietLoaiCongViec.controller.js";
-import authMiddleware from "../middlewares/auth.middleware.js";
-import upload from "../middlewares/upload.middleware.js";
+import authMiddleware from "../../middlewares/auth.middleware.js";
+import upload from "../../middlewares/upload.middleware.js";
 import { chiTietLoaiController } from "../controllers/chiTietLoaiCongViec.controller";
 const router = express.Router();
 
