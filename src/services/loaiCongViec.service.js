@@ -1,4 +1,4 @@
-import prisma from "../../common/prisma/prismaClient.js";
+import prisma from "../common/prisma/prismaClient.js";
 
 export const loaiCongViecService = {
   getAll: async () => {

@@ -9,7 +9,7 @@ import layChiTietLoaiCongViec from "./src/routes/chiTietLoaiCongViec.route.js";
 import loaiCongViec from "./src/routes/loaiCongViec.route.js";
 import nguoiDung from "./src/routes/nguoiDung.route.js";
 import thueCongViec from "./src/routes/thueCongViec.routes.js";
-import swaggerDocs from "./common/swagger/index";
+import swaggerDocs from "./src/common/swagger/index.js";
 import swaggerUi from "swagger-ui-express";
 
 dotenv.config();
