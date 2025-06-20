@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import swaggerUi from "swagger-ui-express";
 // import YAML from "yamljs";
 import authRoutes from "./routes/auth.route.js";
 import binhLuanRoutes from "./routes/binhluan.route.js";
@@ -11,15 +10,15 @@ import loaiCongViec from "./routes/loaiCongViec.route.js";
 import nguoiDung from "./routes/nguoiDung.route.js";
 import thueCongViec from "./routes/thueCongViec.routes.js";
 import swaggerDocs from "./common/swagger/index";
+import swaggerUi from "swagger-ui-express";
 dotenv.config();
 
 const app = express();
 // const swaggerDocument = YAML.load("./swagger.yaml");
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 // Middleware
 app.use(cors());
 app.use(express.json());
-
+app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 // Routes (public)
 app.use("/api/auth", authRoutes);
 app.use("/api/binh-luan", binhLuanRoutes);
