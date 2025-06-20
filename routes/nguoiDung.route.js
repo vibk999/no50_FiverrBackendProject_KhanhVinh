@@ -2,7 +2,7 @@ import express from "express";
 import {
   getAllNguoiDung,
   createNguoiDung,
-  deleteManyNguoiDung,
+  deleteNguoiDung,
   paginateNguoiDung,
   getNguoiDungById,
   updateNguoiDungById,
@@ -16,14 +16,14 @@ import authMiddleware from "../middlewares/auth.middleware.js";
 const router = express.Router();
 
 router.get("/", getAllNguoiDung);
-router.post("/", createNguoiDung);
-router.delete("/", deleteManyNguoiDung);
+router.post("/", authMiddleware, createNguoiDung);
+router.delete("/:id", authMiddleware, deleteNguoiDung);
 
 router.get("/phan-trang-tim-kiem", paginateNguoiDung);
 router.get("/search/:TenNguoiDung", searchNguoiDung);
 
 router.get("/:id", getNguoiDungById);
-router.put("/:id", updateNguoiDungById);
+router.put("/:id", authMiddleware, updateNguoiDungById);
 
 router.post(
   "/upload-avatar",

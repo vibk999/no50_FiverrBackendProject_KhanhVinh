@@ -4,10 +4,10 @@ import authMiddleware from "../middlewares/auth.middleware.js";
 const router = express.Router();
 
 router.get("/", controller.getAll);
-router.post("/", controller.create);
+router.post("/", authMiddleware, controller.create);
 router.get("/phan-trang-tim-kiem", controller.getPaginated);
 router.get("/lay-danh-sach-da-thue", controller.getUserHires);
-router.get("/:id", authMiddleware, controller.getById);
+router.get("/:id", controller.getById);
 router.put("/:id", authMiddleware, controller.update);
 router.delete("/:id", authMiddleware, controller.remove);
 router.post(

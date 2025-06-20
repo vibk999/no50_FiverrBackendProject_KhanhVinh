@@ -4,6 +4,7 @@ const authSwagger = {
       tags: ["Auth"],
       summary: "Đăng ký tài khoản",
       requestBody: {
+        required: true,
         content: {
           "application/json": {
             schema: {
@@ -16,6 +17,7 @@ const authSwagger = {
                 gender: { type: "string", example: "male" },
                 role: { type: "string", example: "USER" },
               },
+              required: ["name", "email", "pass_word", "role"],
             },
           },
         },

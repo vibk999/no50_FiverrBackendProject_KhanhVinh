@@ -8,9 +8,9 @@ export const createNguoiDung = (data) => {
   return prisma.nguoiDung.create({ data });
 };
 
-export const deleteManyNguoiDung = (ids) => {
-  return prisma.nguoiDung.deleteMany({
-    where: { id: { in: ids } },
+export const deleteNguoiDung = (ids) => {
+  return prisma.nguoiDung.delete({
+    where: { id: Number(ids) },
   });
 };
 
@@ -20,14 +20,14 @@ export const paginateNguoiDung = async ({ page, pageSize, keyword }) => {
   const [data, total] = await Promise.all([
     prisma.nguoiDung.findMany({
       where: {
-        ho_ten: { contains: keyword, mode: "insensitive" },
+        name: { contains: keyword },
       },
       skip: +skip,
       take: +pageSize,
     }),
     prisma.nguoiDung.count({
       where: {
-        ho_ten: { contains: keyword, mode: "insensitive" },
+        name: { contains: keyword },
       },
     }),
   ]);
@@ -46,9 +46,9 @@ export const updateNguoiDungById = (id, data) => {
 export const searchNguoiDung = (TenNguoiDung) => {
   return prisma.nguoiDung.findMany({
     where: {
-      ho_ten: {
+      name: {
         contains: TenNguoiDung,
-        mode: "insensitive",
+        // mode: "insensitive",
       },
     },
   });
@@ -57,6 +57,6 @@ export const searchNguoiDung = (TenNguoiDung) => {
 export const uploadAvatar = (userId, fileName) => {
   return prisma.nguoiDung.update({
     where: { id: userId },
-    data: { hinh_anh: fileName },
+    data: { avatar: fileName },
   });
 };

@@ -1,4 +1,5 @@
 import * as nguoiDungService from "../services/nguoiDung.service.js";
+import { loaiCongViecService } from "../services/loaiCongViec.service.js";
 
 export const getAllNguoiDung = async (req, res) => {
   const data = await nguoiDungService.getAllNguoiDung();
@@ -14,12 +15,13 @@ export const createNguoiDung = async (req, res) => {
   }
 };
 
-export const deleteManyNguoiDung = async (req, res) => {
+export const deleteNguoiDung = async (req, res) => {
   try {
-    const data = await nguoiDungService.deleteManyNguoiDung(req.body.ids);
-    res.json(data);
+    const { id } = req.params;
+    await nguoiDungService.deleteNguoiDung(id);
+    res.json({ message: "Xoá thành công" });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ message: "Không tìm thấy", err });
   }
 };
 

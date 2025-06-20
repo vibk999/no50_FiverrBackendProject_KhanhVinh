@@ -10,6 +10,7 @@ const nguoiDungSwagger = {
     post: {
       tags: ["NguoiDung"],
       summary: "Tạo người dùng mới",
+      security: [{ tokenAuth: [] }],
       requestBody: {
         required: true,
         content: {
@@ -17,14 +18,15 @@ const nguoiDungSwagger = {
             schema: {
               type: "object",
               properties: {
-                ho_ten: { type: "string", example: "Nguyễn Văn A" },
+                id: { type: "integer" },
+                name: { type: "string", example: "Nguyễn Văn A" },
                 email: { type: "string", example: "email@example.com" },
-                mat_khau: { type: "string", example: "123456" },
-                so_dien_thoai: { type: "string", example: "0901234567" },
-                vai_tro: { type: "string", example: "user" },
-                hinh_anh: { type: "string", example: "avatar.png" },
+                pass_word: { type: "string", example: "123456" },
+                phone: { type: "string", example: "0901234567" },
+                role: { type: "string", example: "USER" },
+                avatar: { type: "string", example: "avatar.png" },
               },
-              required: ["ho_ten", "email", "mat_khau"],
+              required: ["id", "name", "email", "pass_word"],
             },
           },
         },
@@ -36,24 +38,16 @@ const nguoiDungSwagger = {
     },
     delete: {
       tags: ["NguoiDung"],
-      summary: "Xoá nhiều người dùng theo danh sách",
-      requestBody: {
-        required: true,
-        content: {
-          "application/json": {
-            schema: {
-              type: "object",
-              properties: {
-                ids: {
-                  type: "array",
-                  items: { type: "integer" },
-                },
-              },
-              required: ["ids"],
-            },
-          },
+      summary: "Xoá  người dùng theo id",
+      security: [{ tokenAuth: [] }],
+      parameters: [
+        {
+          in: "path",
+          name: "id",
+          required: true,
+          schema: { type: "integer" },
         },
-      },
+      ],
       responses: {
         200: { description: "Xoá thành công" },
         400: { description: "Lỗi dữ liệu" },
@@ -108,6 +102,7 @@ const nguoiDungSwagger = {
     put: {
       tags: ["NguoiDung"],
       summary: "Cập nhật người dùng theo ID",
+      security: [{ tokenAuth: [] }],
       parameters: [
         {
           in: "path",
@@ -123,11 +118,11 @@ const nguoiDungSwagger = {
             schema: {
               type: "object",
               properties: {
-                ho_ten: { type: "string", example: "Nguyễn Văn B" },
+                name: { type: "string", example: "Nguyễn Văn B" },
                 email: { type: "string", example: "newemail@example.com" },
-                so_dien_thoai: { type: "string", example: "0987654321" },
-                vai_tro: { type: "string", example: "admin" },
-                hinh_anh: { type: "string", example: "new_avatar.png" },
+                phone: { type: "string", example: "0987654321" },
+                role: { type: "string", example: "admin" },
+                avatar: { type: "string", example: "new_avatar.png" },
               },
             },
           },
@@ -162,6 +157,7 @@ const nguoiDungSwagger = {
     post: {
       tags: ["NguoiDung"],
       summary: "Tải ảnh đại diện người dùng",
+      security: [{ tokenAuth: [] }],
       requestBody: {
         required: true,
         content: {

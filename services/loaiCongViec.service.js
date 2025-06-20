@@ -39,7 +39,7 @@ export const loaiCongViecService = {
         where: {
           ten_loai_cong_viec: {
             contains: keyword,
-            mode: "insensitive",
+            // mode: "insensitive",
           },
         },
       }),
@@ -47,7 +47,7 @@ export const loaiCongViecService = {
         where: {
           ten_loai_cong_viec: {
             contains: keyword,
-            mode: "insensitive",
+            // mode: "insensitive",
           },
         },
       }),
