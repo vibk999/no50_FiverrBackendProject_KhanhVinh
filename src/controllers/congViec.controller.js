@@ -1,5 +1,4 @@
-import * as congViecService from "../services/congViec.service";
-import { layMenuLoaiCongViecService } from "../services/congViec.service";
+import * as congViecService from "../services/congViec.service.js";
 
 // Lấy tất cả công việc
 export const getAllCongViec = async (req, res) => {

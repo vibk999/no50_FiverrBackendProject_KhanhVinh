@@ -5,7 +5,7 @@ import {
   updateBinhLuan,
   deleteBinhLuan,
   getByMaCongViec,
-} from "../controllers/binhLuan.controller";
+} from "../controllers/binhLuan.controller.js";
 import authMiddleware from "../../middlewares/auth.middleware.js";
 const router = express.Router();
 

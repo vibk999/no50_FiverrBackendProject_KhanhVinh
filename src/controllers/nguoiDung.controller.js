@@ -1,5 +1,4 @@
 import * as nguoiDungService from "../services/nguoiDung.service.js";
-import { loaiCongViecService } from "../services/loaiCongViec.service.js";
 
 export const getAllNguoiDung = async (req, res) => {
   const data = await nguoiDungService.getAllNguoiDung();

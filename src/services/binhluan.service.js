@@ -1,4 +1,4 @@
-import prisma from "../common/prisma/prismaClient";
+import prisma from "../common/prisma/prismaClient.js";
 
 const getAll = async () => {
   return await prisma.binhLuan.findMany();

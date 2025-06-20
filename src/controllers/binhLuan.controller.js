@@ -1,4 +1,4 @@
-import BinhLuanService from "../services/binhluan.service";
+import BinhLuanService from "../services/binhluan.service.js";
 
 export const getAllBinhLuan = async (req, res) => {
   const data = await BinhLuanService.getAll();
