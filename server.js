@@ -2,17 +2,17 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 // import YAML from "yamljs";
-import authRoutes from "./routes/auth.route.js";
-import binhLuanRoutes from "./routes/binhluan.route.js";
-import congViecRoutes from "./routes/congViec.routes";
-import layChiTietLoaiCongViec from "./routes/chiTietLoaiCongViec.route.js";
-import loaiCongViec from "./routes/loaiCongViec.route.js";
-import nguoiDung from "./routes/nguoiDung.route.js";
-import thueCongViec from "./routes/thueCongViec.routes.js";
-import swaggerDocs from "./common/swagger/index";
+import authRoutes from "../routes/auth.route.js";
+import binhLuanRoutes from "../routes/binhluan.route.js";
+import congViecRoutes from "../routes/congViec.routes.js";
+import layChiTietLoaiCongViec from "../routes/chiTietLoaiCongViec.route.js";
+import loaiCongViec from "../routes/loaiCongViec.route.js";
+import nguoiDung from "../routes/nguoiDung.route.js";
+import thueCongViec from "../routes/thueCongViec.routes.js";
+import swaggerDocs from "../common/swagger/index";
 import swaggerUi from "swagger-ui-express";
-dotenv.config();
 
+dotenv.config();
 const app = express();
 // const swaggerDocument = YAML.load("./swagger.yaml");
 // Middleware
@@ -29,10 +29,7 @@ app.use("/api/loai-cong-viec", loaiCongViec);
 app.use("/api/users", nguoiDung);
 app.use("/api/thue-cong-viec", thueCongViec);
 // Default route
-app.get("/", (req, res) => {
-  res.json({ message: "API is running" });
-});
-
+app.get("/", (req, res) => res.send("Express on Vercel"));
 // Error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -44,3 +41,4 @@ const PORT = process.env.PORT || 3069;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+module.exports = app;

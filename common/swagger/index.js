@@ -13,7 +13,7 @@ const swaggerDocs = {
   },
   servers: [
     {
-      url: "https://your-vercel-app.vercel.app/api",
+      url: "",
       description: "Production Server",
     },
   ],
