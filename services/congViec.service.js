@@ -8,12 +8,6 @@ export const createCongViec = async (data) => {
   return await prisma.congViec.create({ data });
 };
 
-export const getCongViecById = async (id) => {
-  return await prisma.congViec.findUnique({
-    where: { id: Number(id) },
-  });
-};
-
 export const updateCongViec = async (id, data) => {
   return await prisma.congViec.update({
     where: { id: Number(id) },
@@ -63,19 +57,71 @@ export const getCongViecPaging = async (page = 1, size = 10, keyword = "") => {
 
   return { total, data };
 };
-export const layMenuLoaiCongViec = async () => {
-  return await prisma.loaiCongViec.findMany({
-    where: {
-      isDeleted: false,
-    },
-    include: {
-      chiTietLoai: {
-        where: {
-          isDeleted: false,
+export const layMenuLoaiCongViecService = async () => {
+  try {
+    const loaiCongViecList = await prisma.loaiCongViec.findMany({
+      where: {
+        isDeleted: false,
+      },
+      select: {
+        id: true,
+        ten_loai_cong_viec: true,
+        chiTietLoai: {
+          where: {
+            isDeleted: false,
+          },
+          select: {
+            id: true,
+            ten_chi_tiet: true,
+            hinh_anh: true,
+            ma_loai_cong_viec: true,
+          },
         },
       },
-    },
-  });
+    });
+
+    const result = loaiCongViecList.map((loai) => {
+      // Gom nhóm theo ten_chi_tiet (tenNhom) và ma_loai_cong_viec
+      const groupMap = {};
+
+      loai.chiTietLoai.forEach((ct) => {
+        const key = ct.ten_chi_tiet + ct.hinh_anh;
+
+        if (!groupMap[key]) {
+          groupMap[key] = {
+            id: ct.id,
+            tenNhom: ct.ten_chi_tiet,
+            hinhAnh: ct.hinh_anh,
+            maLoaiCongViec: ct.ma_loai_cong_viec,
+            dsChiTietLoai: [],
+          };
+        }
+
+        groupMap[key].dsChiTietLoai.push({
+          id: ct.id,
+          tenChiTiet: ct.ten_chi_tiet,
+        });
+      });
+
+      return {
+        id: loai.id,
+        tenloaiCongViec: loai.ten_loai_cong_viec,
+        dsNhomChiTietLoai: Object.values(groupMap),
+      };
+    });
+
+    return {
+      statusCode: 200,
+      content: result,
+    };
+  } catch (error) {
+    console.error("Lỗi khi lấy menu loại công việc:", error);
+    return {
+      statusCode: 500,
+      message: "Lỗi khi lấy menu loại công việc",
+      error: error.message,
+    };
+  }
 };
 export const layChiTietLoaiCongViec = async (maLoaiCongViec) => {
   return await prisma.chiTietLoaiCongViec.findMany({
@@ -90,8 +136,11 @@ export const layCongViecTheoChiTietLoai = async (maChiTietLoai) => {
 };
 
 export const layCongViecChiTiet = async (maCongViec) => {
+  const parsedId = Number(maCongViec);
+  if (isNaN(parsedId)) throw new Error("Mã công việc không hợp lệ");
+
   return await prisma.congViec.findUnique({
-    where: { id: maCongViec },
+    where: { id: parsedId },
     include: {
       chiTietLoai: {
         include: {
@@ -113,8 +162,12 @@ export const layDanhSachCongViecTheoTen = async (ten) => {
     where: {
       ten_cong_viec: {
         contains: ten,
-        // mode: "insensitive",
       },
     },
+  });
+};
+export const getCongViecById = async (id) => {
+  return await prisma.congViec.findUnique({
+    where: { id },
   });
 };

@@ -1,0 +1,75 @@
+{
+	"info": {
+		"_postman_id": "5dc8dbb5-c8f7-40d3-9512-03fc89f29348",
+		"name": "FIVERR_auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16209706",
+		"_collection_link": "https://www.postman.com/security-geologist-94927015/workspace/vinh/collection/16209706-5dc8dbb5-c8f7-40d3-9512-03fc89f29348?action=share&source=collection_link&creator=16209706"
+	},
+	"item": [
+		{
+			"name": "signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"Vinh1@example.com\",\r\n  \"pass_word\": \"123456\",\r\n  \"name\": \"Nguyễn Văn A\",\r\n  \"phone\": \"0123456789\",\r\n  \"birth_day\": \"2000-01-01\",\r\n  \"gender\": \"male\",\r\n  \"role\": \"USER\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}api/auth/signup",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "signin",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"Vinh@example.com\",\r\n  \"pass_word\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}api/auth/signin",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"auth",
+						"signin"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

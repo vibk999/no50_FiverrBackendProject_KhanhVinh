@@ -2,6 +2,7 @@ import express from "express";
 import * as congViecController from "../controllers/congViec.controller.js";
 import upload from "../middlewares/upload.middleware.js";
 import authMiddleware from "../middlewares/auth.middleware.js";
+import { layMenuLoaiCongViec } from "../controllers/congViec.controller";
 
 const router = express.Router();
 
@@ -12,7 +13,6 @@ router.get("/", congViecController.getAllCongViec);
 router.get("/phan-trang-tim-kiem", congViecController.getCongViecPaging);
 
 // GET - Lấy công việc theo ID
-router.get("/:id", congViecController.getCongViecById);
 
 // POST - Thêm công việc mới (có token)
 router.post("/", authMiddleware, congViecController.createCongViec);
@@ -31,8 +31,7 @@ router.post(
   congViecController.uploadHinhCongViec
 );
 
-// GET - Lấy menu loại công việc
-router.get("/lay-menu-loai-cong-viec", congViecController.layMenuLoaiCongViec);
+router.get("/lay-menu-loai-cong-viec", layMenuLoaiCongViec);
 
 // GET - Lấy chi tiết loại công việc theo mã loại
 router.get(
@@ -58,4 +57,5 @@ router.get(
   congViecController.layDanhSachCongViecTheoTen
 );
 
+router.get("/:id", congViecController.getCongViecById);
 export default router;

@@ -23,8 +23,9 @@ app.use(express.json());
 // Routes (public)
 app.use("/api/auth", authRoutes);
 app.use("/api/binh-luan", binhLuanRoutes);
-app.use("/api/chi-tiet-loai-cong-viec", layChiTietLoaiCongViec);
 app.use("/api/cong-viec", congViecRoutes);
+app.use("/api/chi-tiet-loai-cong-viec", layChiTietLoaiCongViec);
+
 app.use("/api/loai-cong-viec", loaiCongViec);
 app.use("/api/users", nguoiDung);
 app.use("/api/thue-cong-viec", thueCongViec);

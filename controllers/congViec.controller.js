@@ -1,4 +1,5 @@
 import * as congViecService from "../services/congViec.service";
+import { layMenuLoaiCongViecService } from "../services/congViec.service";
 
 // Lấy tất cả công việc
 export const getAllCongViec = async (req, res) => {
@@ -7,19 +8,6 @@ export const getAllCongViec = async (req, res) => {
     res.status(200).json(data);
   } catch (err) {
     res.status(500).json({ message: "Lỗi server", error: err.message });
-  }
-};
-
-// Lấy công việc theo ID
-export const getCongViecById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const congViec = await congViecService.getCongViecById(id);
-    if (!congViec)
-      return res.status(404).json({ message: "Không tìm thấy công việc" });
-    res.status(200).json(congViec);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
   }
 };
 
@@ -90,11 +78,14 @@ export const uploadHinhCongViec = async (req, res) => {
 // Lấy menu loại công việc
 export const layMenuLoaiCongViec = async (req, res) => {
   try {
-    const data = await congViecService.layMenuLoaiCongViec();
-    res.status(200).json(data);
+    const result = await congViecService.layMenuLoaiCongViecService();
+
+    res.status(result.statusCode).json(result);
   } catch (error) {
-    console.error("Lỗi khi lấy menu loại công việc:", error);
-    res.status(500).json({ message: "Lỗi máy chủ." });
+    res.status(500).json({
+      message: "Lỗi server nội bộ",
+      error: error.message,
+    });
   }
 };
 // Lấy chi tiết loại công việc theo mã loại
@@ -162,6 +153,27 @@ export const getCongViecPaging = async (req, res) => {
       keyword,
     });
     res.status(200).json(data);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const getCongViecById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    if (isNaN(parsedId)) {
+      return res.status(400).json({ message: "ID không hợp lệ" });
+    }
+
+    const congViec = await congViecService.getCongViecById(parsedId);
+
+    if (!congViec) {
+      return res.status(404).json({ message: "Không tìm thấy công việc" });
+    }
+
+    res.status(200).json(congViec);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

@@ -28,9 +28,8 @@ export const getPaginated = async (page, pageSize, keyword) => {
   const where = keyword
     ? {
         congViec: {
-          tenCongViec: {
+          ten_cong_viec: {
             contains: keyword,
-            mode: "insensitive",
           },
         },
       }

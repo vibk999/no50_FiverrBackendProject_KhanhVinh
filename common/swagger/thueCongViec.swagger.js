@@ -10,6 +10,7 @@ const thueCongViecSwagger = {
     post: {
       tags: ["ThueCongViec"],
       summary: "Tạo thuê công việc mới",
+      security: [{ tokenAuth: [] }],
       requestBody: {
         required: true,
         content: {
@@ -24,6 +25,7 @@ const thueCongViecSwagger = {
                   format: "date-time",
                   example: "2025-06-13T10:00:00Z",
                 },
+                hoan_thanh: { type: "boolean" },
               },
               required: ["ma_cong_viec", "ma_nguoi_thue", "ngay_thue"],
             },
@@ -87,6 +89,7 @@ const thueCongViecSwagger = {
     put: {
       tags: ["ThueCongViec"],
       summary: "Cập nhật thuê công việc theo ID",
+      security: [{ tokenAuth: [] }],
       parameters: [
         {
           name: "id",
@@ -109,6 +112,7 @@ const thueCongViecSwagger = {
                   format: "date-time",
                   example: "2025-06-14T14:00:00Z",
                 },
+                hoan_thanh: { type: "boolean", example: false },
               },
             },
           },
@@ -122,6 +126,7 @@ const thueCongViecSwagger = {
     delete: {
       tags: ["ThueCongViec"],
       summary: "Xoá thuê công việc theo ID",
+      security: [{ tokenAuth: [] }],
       parameters: [
         {
           name: "id",
@@ -151,6 +156,7 @@ const thueCongViecSwagger = {
     post: {
       tags: ["ThueCongViec"],
       summary: "Hoàn thành công việc thuê",
+      security: [{ tokenAuth: [] }],
       parameters: [
         {
           name: "MaThueCongViec",
