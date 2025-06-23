@@ -29,7 +29,7 @@ app.use("/api/loai-cong-viec", loaiCongViec);
 app.use("/api/users", nguoiDung);
 app.use("/api/thue-cong-viec", thueCongViec);
 // Default route
-app.get("/", (req, res) => res.send("localhost deploy"));
+app.get("/", (req, res) => res.send("API is running"));
 // Error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
